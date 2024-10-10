@@ -3,78 +3,155 @@
 {% block page_title %}Home{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/flashcard.css') }}">
-{% endblock %}
+<style>
+/* Flashcard container */
+.flashcard {
+    margin: 20px auto;
+    max-width: 600px;
+    border: 2px solid #dee2e6;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: #fff;
+}
 
+/* Flashcard header */
+.flashcard .card-header {
+    background-color: #f8f9fa;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px;
+    text-align: center;
+}
+
+/* Flashcard body */
+.flashcard .card-body {
+    padding: 20px;
+    text-align: center;
+}
+
+/* Flashcard content */
+.flashcard .card-body .card-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    margin: 20px 0;
+}
+
+/* Flashcard question image */
+.flashcard img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Input group for answer submission */
+.flashcard .input-group {
+    margin-top: 20px;
+}
+
+.flashcard .input-group input {
+    height: 45px;
+    font-size: 16px;
+}
+
+.flashcard .input-group .btn {
+    font-size: 16px;
+    height: 45px;
+}
+
+/* Navigation buttons */
+#buttonArea {
+    margin-top: 20px;
+}
+
+#buttonArea .btn {
+    width: 100px;
+    margin: 0 10px;
+}
+
+/* Accordion styling */
+#accordion .card {
+    margin-bottom: 10px;
+}
+
+#accordion .card-header {
+    padding: 10px 15px;
+}
+
+#accordion .card-header button {
+    font-size: 14px;
+}
+</style>
+{% endblock %}
 
 {% block body %}
 
 <!-- Creates Accordion drop down select for Subjects and Decks options -->
 <div id="accordion">
 
-	<!-- Subjects Card and Selection -->
-	<div class="card">
-		<div class="card-header bg-light" id="headingOne">
-			<h6 class="mb-0">
-				<button class="btn btn-sm btn-link collapsed text-black" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-					Subjects
-				</button>
-			</h6>
-		</div>
+    <!-- Subjects Card and Selection -->
+    <div class="card">
+        <div class="card-header bg-light" id="headingOne">
+            <h6 class="mb-0">
+                <button class="btn btn-sm btn-link collapsed text-black" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    Subjects
+                </button>
+            </h6>
+        </div>
 
-		<div id="collapseOne" class="collapse w-100" aria-labelledby="headingOne" data-parent="#accordion">
-			<div class="card-body">
-				<div class="overflow-auto col-md-6 w-100 center" style="max-height: 300px;">
-					<div class="list-group">
-
-						<!-- Iterate over subjects (from students.routes.py) -->
-						{% for subject in subjects %}
-                            <a href="{{ url_for("student.subject", username=current_user.username, subject=subject.name) }}" class="list-group-item list-group-item-action">{{ subject.name }}</a>
-						{% endfor %}
-
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<!-- Decks Card and Selection -->
-	<div class="card">
-		<div class="card-header" id="headingTwo">
-			<h6 class="mb-0">
-				<button class="btn btn-link btn-sm collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-					Decks
-				</button>
-			</h6>
-		</div>
-		<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-			<div class="card-body">
-				<div class="overflow-auto col-md-6 w-100 center" style="max-height: 300px;">
-					<div class="list-group">
-
-						<!-- Iterate over decks and place each deck -->
-						{% for deck in decks %}
-                            <a href="{{ url_for("student.deck", username=current_user.username, subject=curr_subject, deck=deck.name) }}" class="list-group-item list-group-item-action">{{ deck.name }}</a>
-						{% endfor %}
-
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div id="collapseOne" class="collapse w-100" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                <div class="overflow-auto col-md-6 w-100 center" style="max-height: 300px;">
+                    <div class="list-group">
+                        <!-- Iterate over subjects (from students.routes.py) -->
+                        {% for subject in subjects %}
+                            <a href="{{ url_for('student.subject', username=current_user.username, subject=subject.name) }}" class="list-group-item list-group-item-action">{{ subject.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Decks Card and Selection -->
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+            <h6 class="mb-0">
+                <button class="btn btn-link btn-sm collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Decks
+                </button>
+            </h6>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+                <div class="overflow-auto col-md-6 w-100 center" style="max-height: 300px;">
+                    <div class="list-group">
+                        <!-- Iterate over decks and place each deck -->
+                        {% for deck in decks %}
+                            <a href="{{ url_for('student.deck', username=current_user.username, subject=curr_subject, deck=deck.name) }}" class="list-group-item list-group-item-action">{{ deck.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Flashcard Section -->
-<div class="card text-center">
+<div class="card text-center flashcard">
 
-	<!-- Header Information (Current Deck, Current Subject and Deck Progress) -->
-	<div class="card-header">
-		Current Deck: (Deck Name)<br>
-		Current Subject: (Subject Name)<br>
-		<div class="progress">
-			<div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-		</div>
-	</div>
+    <!-- Header Information (Current Deck, Current Subject and Deck Progress) -->
+    <div class="card-header">
+        Current Deck: (Deck Name)<br>
+        Current Subject: (Subject Name)<br>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+        </div>
+    </div>
+    
     <div>
         {% if flashcard != None %}
             <img src="{{ url_for('static', filename=flashcard.q_image) }}" style="width:250px; height:auto;"/>
@@ -82,35 +159,32 @@
         {% endif %}
     </div>
 
-	<!-- Flashcard -->
-	<div class="card-body">
+    <!-- Flashcard -->
+    <div class="card-body">
+        <!-- Card Number of Deck of Card -->
+        <h6 class="card-title">Card (#) of (#)</h6>
+        <div class="card min-vw-50">
+            <div class="card-body">
+                <p class="card-text">(Flashcard Definition goes here).</p>
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            <!-- Answer is inputted here -->
+            <input type="text" class="form-control" placeholder="Answer" aria-label="Answer" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-primary btn-large" type="button">Submit</button>
+            </div>
+        </div>
 
-		<!-- Card Number of Deck of Card -->
-		<h6 class="card-title">Card (#) of (#)</h6>
-		<div class="card min-vw-50">
-			<div class="card-body">
-				<p class="card-text">(Flashcard Definition goes here).</p>
-			</div>
-		</div>
-		<div class="input-group mb-3">
-
-			<!-- Answer is inputted here -->
-			<input type="text" class="form-control" placeholder="Answer" aria-label="Answer" aria-describedby="basic-addon2">
-			<div class="input-group-append">
-				<button class="btn btn-primary btn-large" type="button">Submit</button>
-			</div>
-		</div>
-
-		<!-- Buttons for Flashcard Navigation -->
-		<div id="buttonArea">
-			<button type="button" class="btn btn-secondary">Prev.</button>
+        <!-- Buttons for Flashcard Navigation -->
+        <div id="buttonArea">
+            <button type="button" class="btn btn-secondary">Prev.</button>
             <button type="button" class="btn btn-secondary">Next</button>
-		</div>
-	</div>
-	<div class="card-footer text-muted">
-		<!-- Footer Text can go here -->
-	</div>
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+        <!-- Footer Text can go here -->
+    </div>
 </div>
 
 {% endblock %}
-

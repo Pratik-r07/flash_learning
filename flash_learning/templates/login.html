@@ -1,54 +1,102 @@
-
-
 <!-- Links to 'base_anon.html' as a base template file (which inherits from the base.html) -->
 {% extends 'base_anon.html' %}
 
 <!-- Jinja2 Template Block for Head of Webpage -->
 {% block head %}
+<style>
+    /* Style for the login form container */
+    #login {
+        width: 400px; /* Set a width for the form */
+        margin: 0 auto; /* Center the form */
+        padding: 20px; /* Add padding */
+        border: 1px solid #ddd; /* Light border */
+        border-radius: 5px; /* Rounded corners */
+        background-color: #f9f9f9; /* Light background color */
+    }
+
+    /* Style for form group */
+    .form-group {
+        margin-bottom: 15px; /* Space between groups */
+    }
+
+    /* Style for input fields */
+    input[type="text"], 
+    input[type="password"] {
+        width: 100%; /* Full width */
+        padding: 10px; /* Padding inside the input */
+        margin: 6px 0; /* Margin around the input */
+        border: 1px solid #ccc; /* Border color */
+        border-radius: 4px; /* Rounded corners */
+        box-sizing: border-box; /* Include padding and border in width */
+    }
+
+    /* Style for submit button */
+    input[type="submit"] {
+        width: 100%; /* Full width */
+        background-color: #4CAF50; /* Green background */
+        color: white; /* White text */
+        padding: 10px; /* Padding inside button */
+        border: none; /* Remove border */
+        border-radius: 4px; /* Rounded corners */
+        cursor: pointer; /* Pointer on hover */
+        margin-top: 10px; /* Space above the button */
+    }
+
+    input[type="submit"]:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+
+    /* Style for error messages */
+    span {
+        color: red; /* Red color for error messages */
+        font-size: 12px; /* Smaller font size */
+    }
+
+    /* Style for flashed messages */
+    p.message {
+        background-color: #ffdddd; /* Light red background */
+        border-left: 6px solid #f44336; /* Red left border */
+        padding: 10px; /* Padding inside message */
+        margin-bottom: 15px; /* Space below the message */
+    }
+</style>
 {% endblock %}
 
 <!-- Jinja2 Template Block for Body of Webpage -->
 {% block body %}
-
 <!-- Boiler language for flashed messages  -->
     {% with messages = get_flashed_messages() %}
-
         <!-- Check for messages that are ready to display -->
         {% if messages %}
-            
             <!-- Iterate through all current messages -->
             {% for message in messages %}
-
-                <!-- Add each message as paragraph tag -->
-                <p>{{message}}</p>
-
+                <!-- Add each message as a styled paragraph -->
+                <p class="message">{{ message }}</p>
             {% endfor %}
         {% endif %}
     {% endwith %}
 
-
-
-<form action="" method="post" id="login" novalidate>
-    <div class="form-group">
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.username.label }}: {{ form.username() }}<br>
-        {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
-        {{ form.password.label }}: {{ form.password() }}<br>
-        {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-    </p>
-    <p>
+    <form action="" method="post" id="login" novalidate>
+        <div class="form-group">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.username.label }}: {{ form.username() }}<br>
+                {% for error in form.username.errors %}
+                    <span>[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.password.label }}: {{ form.password() }}<br>
+                {% for error in form.password.errors %}
+                    <span>[{{ error }}]</span>
+                {% endfor %}
+            </p>
         </div>
-        {{ form.submit() }}
-        {{ form.csrf_token }}
-        <input type="checkbox" id="remember" name="remember">
-        <label for="remember"> Remember Me</label><br>
-    </p>
-</form>
+        <p>
+            {{ form.submit() }}
+            {{ form.csrf_token }}
+            <input type="checkbox" id="remember" name="remember">
+            <label for="remember"> Remember Me</label><br>
+        </p>
+    </form>
 {% endblock %}
